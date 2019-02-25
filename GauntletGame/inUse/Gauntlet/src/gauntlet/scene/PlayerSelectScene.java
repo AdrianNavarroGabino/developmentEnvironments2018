@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gauntlet.scene;
 
 import gauntlet.Gauntlet;
@@ -16,82 +11,67 @@ import javafx.scene.input.KeyCode;
  *
  * @author Adrián Navarro Gabino
  */
-public class PlayerSelectScene extends GauntletScene {
+public class PlayerSelectScene extends GauntletScene
+{
+    public static final String PLAYER_SELECT_SCENE_PATH =
+            "img/player_select_screen.png";
+    public static final String POINTER_PATH = "img/choose_player.png";
     
-    public static final String PLAYER_SELECT_SCENE_PATH
-            = "img/player_select_screen.png";
-    public static final String CHOOSE_PATH
-            = "img/choose_player.png";
+    public static final int STARTING_POINTER_X = 510;
+    public static final int STARTING_POINTER_Y = 125;
+    public static final int POINTER_Y_INCREMENT = 105;
     
     private Image imgBackground;
-    private Image imgChoose;
-    private int yChoose = 125;
-    private static String character;
-
-    public static String getCharacter() {
-        return character;
-    }
-
-    public static void setCharacter(String character) {
-        PlayerSelectScene.character = character;
-    }
+    private Image imgPointer;
+    protected static int chosenPlayer;
+    private int chosenPlayerY;
     
-    public PlayerSelectScene() {
+    public PlayerSelectScene()
+    {
         super();
-        try {
+        
+        chosenPlayer = 0;
+        chosenPlayerY = STARTING_POINTER_Y;
+        
+        try
+        {
             imgBackground = new Image(Files.newInputStream(
                     Paths.get(PLAYER_SELECT_SCENE_PATH)));
+            imgPointer = new Image(Files.newInputStream(
+                    Paths.get(POINTER_PATH)));            
         } catch (Exception e) {
-        }
-        try {
-        imgChoose = new Image(Files.newInputStream(
-                Paths.get(CHOOSE_PATH)));
-        } catch (Exception e) {
-        }
+            return;
+        }                
     }
 
     @Override
-    public void draw() {
+    public void draw() 
+    {
         activeKeys.clear();
-        new AnimationTimer() {
-            public void handle(long currentNanoTime) {
-                
-                if (activeKeys.contains(KeyCode.SPACE)) {
-                    if(yChoose == 125) {
-                        setCharacter("warrior");
-                    }
-                    else if(yChoose == 230) {
-                        setCharacter("valkyrie");
-                    }
-                    else if(yChoose == 335) {
-                        setCharacter("sorcerer");
-                    }
-                    else {
-                        setCharacter("dwarf");
-                    }
-
+        
+        new AnimationTimer()
+        {
+            @Override
+            public void handle(long currentNanoTime)
+            {
+                if(activeKeys.contains(KeyCode.SPACE))
+                {
                     this.stop();
                     Gauntlet.setScene(Gauntlet.GAME_SCENE);
+                } else if (releasedKeys.contains(KeyCode.UP) &&
+                        chosenPlayer > 0) {
+                    chosenPlayer--;
+                    chosenPlayerY -= POINTER_Y_INCREMENT;
+                } else if (releasedKeys.contains(KeyCode.DOWN) &&
+                        chosenPlayer < 3) {
+                    chosenPlayer++;
+                    chosenPlayerY += POINTER_Y_INCREMENT;
                 }
-                if (releasedKeys.contains(KeyCode.UP) && yChoose != 125) {
-                    yChoose -= 105;
-                }
-                else if (releasedKeys.contains(KeyCode.DOWN) && yChoose != 440){
-                    yChoose += 105;
-                }
-                else if (releasedKeys.contains(KeyCode.DOWN) && yChoose == 440){
-                    yChoose = 125;
-                }
-                else if (releasedKeys.contains(KeyCode.UP) && yChoose == 125){
-                    yChoose = 440;
-                }
-                releasedKeys.remove(KeyCode.UP);
-                releasedKeys.remove(KeyCode.DOWN);
-               
+                gc.drawImage(imgBackground, 0, 0);    
+                gc.drawImage(imgPointer, STARTING_POINTER_X, chosenPlayerY);
                 
-                gc.drawImage(imgBackground, 0, 0);
-                gc.drawImage(imgChoose, 510, yChoose);
+                releasedKeys.clear();
             }
-        }.start();
+        }.start();        
     }
-}
+}    
