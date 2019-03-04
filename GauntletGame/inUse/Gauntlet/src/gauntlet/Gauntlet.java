@@ -5,8 +5,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 /**
- *
- * @author Adrián Navarro Gabino
+ * Main Gauntlet class to launch the video game
+ * @author nacho
  */
 public class Gauntlet extends Application 
 {

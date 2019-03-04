@@ -11,13 +11,12 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 /**
- *
+ * Scene to draw the welcome screen
  * @author Adrián Navarro Gabino
  */
 public class WelcomeScene extends GauntletScene
 {
     public static final String WELCOME_SCREEN_PATH = "img/welcome_screen.png";
-    
     public static final String WELCOME_SONG = "sound/title.mp3";
     
     private Image imgBackground;
@@ -28,8 +27,7 @@ public class WelcomeScene extends GauntletScene
         
         try
         {
-            imgBackground = new Image(Files.newInputStream(
-                    Paths.get(WELCOME_SCREEN_PATH)));
+            imgBackground = new Image(Files.newInputStream(Paths.get(WELCOME_SCREEN_PATH)));
         } catch (Exception e) {
         }                
     }
@@ -37,15 +35,13 @@ public class WelcomeScene extends GauntletScene
     @Override
     public void draw() 
     {
-        sound = new Media(new File(WELCOME_SONG).toURI().toString());
-        mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.play();
-
         activeKeys.clear();
+        sound = new Media(new File(WELCOME_SONG).toURI().toString());
+        mediaPlayer = new MediaPlayer(sound);        
+        mediaPlayer.play();
         
         new AnimationTimer()
         {
-            @Override
             public void handle(long currentNanoTime)
             {
                 if(activeKeys.contains(KeyCode.SPACE))

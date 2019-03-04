@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gauntlet.sprite;
 
 /**
@@ -12,7 +7,7 @@ package gauntlet.sprite;
 public class MovableSprite extends Sprite
 {
     public static final int TOTAL_MOVEMENTS = 8;
-    public static final byte SPRITE_CHANGE = 10;
+    public static final byte SPRITE_CHANGE = 10;    
     
     public static final int LEFT = 0;
     public static final int LEFT_UP = 1;
@@ -25,11 +20,11 @@ public class MovableSprite extends Sprite
     
     protected int currentDirection;
     protected byte currentSprite;
-    
-    protected byte currentSpriteChange;
+    protected byte currentSpriteChange;    
     
     public int[][] spriteXCoordinates = new int[TOTAL_MOVEMENTS][];
     public int[][] spriteYCoordinates = new int[TOTAL_MOVEMENTS][];
+    
     
     public MovableSprite()
     {
@@ -37,7 +32,7 @@ public class MovableSprite extends Sprite
         currentSprite = 0;
         currentSpriteChange = 0;
     }
-    
+        
     public void animate(int movement)
     {
         if (movement != currentDirection)
@@ -50,16 +45,16 @@ public class MovableSprite extends Sprite
             if (currentSpriteChange >= SPRITE_CHANGE)
             {
                 currentSpriteChange = 0;
-                currentSprite = (byte)((currentSprite + 1) %
-                                spriteXCoordinates[currentDirection].length);
+                currentSprite = (byte)((currentSprite + 1) % 
+                    spriteXCoordinates[currentDirection].length);
             }
         }
         updateSpriteCoordinates();
     }
-    
+
     protected void updateSpriteCoordinates()
     {
         spriteX = spriteXCoordinates[currentDirection][currentSprite];
         spriteY = spriteYCoordinates[currentDirection][currentSprite];
-    }
+    }    
 }
