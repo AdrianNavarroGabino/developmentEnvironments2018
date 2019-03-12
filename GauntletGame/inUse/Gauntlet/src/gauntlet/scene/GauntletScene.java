@@ -11,7 +11,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 /**
- *
+ * Main abstract class to define every scene of the video game
  * @author Adrián Navarro Gabino
  */
 public abstract class GauntletScene extends Scene
@@ -32,7 +32,6 @@ public abstract class GauntletScene extends Scene
     public GauntletScene() 
     {
         super(new StackPane(), GAME_WIDTH, GAME_HEIGHT);
-        
         root = new StackPane();
         this.setRoot(root);
                 

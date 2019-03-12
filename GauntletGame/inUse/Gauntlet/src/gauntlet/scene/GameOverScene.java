@@ -7,13 +7,12 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 
 /**
- *
+ * Scene to draw the welcome screen
  * @author Adrián Navarro Gabino
  */
 public class GameOverScene extends GauntletScene
 {
-    public static final String GAME_OVER_SCREEN_PATH =
-            "img/game_over_screen.png";
+    public static final String GAME_OVER_SCREEN_PATH = "img/game_over_screen.png";
     
     private Image imgBackground;
     
@@ -23,8 +22,7 @@ public class GameOverScene extends GauntletScene
         
         try
         {
-            imgBackground = new Image(Files.newInputStream(
-                    Paths.get(GAME_OVER_SCREEN_PATH)));
+            imgBackground = new Image(Files.newInputStream(Paths.get(GAME_OVER_SCREEN_PATH)));
         } catch (Exception e) {
         }                
     }
@@ -36,7 +34,6 @@ public class GameOverScene extends GauntletScene
         
         new AnimationTimer()
         {
-            @Override
             public void handle(long currentNanoTime)
             {
                 if(activeKeys.size() > 0)

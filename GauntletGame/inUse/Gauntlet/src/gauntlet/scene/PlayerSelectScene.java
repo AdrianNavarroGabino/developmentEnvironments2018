@@ -8,13 +8,12 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
 /**
- *
+ * Scene to choose player before starting the game
  * @author Adrián Navarro Gabino
  */
 public class PlayerSelectScene extends GauntletScene
 {
-    public static final String PLAYER_SELECT_SCENE_PATH =
-            "img/player_select_screen.png";
+    public static final String PLAYER_SELECT_SCENE_PATH = "img/player_select_screen.png";
     public static final String POINTER_PATH = "img/choose_player.png";
     
     public static final int STARTING_POINTER_X = 510;
@@ -35,10 +34,8 @@ public class PlayerSelectScene extends GauntletScene
         
         try
         {
-            imgBackground = new Image(Files.newInputStream(
-                    Paths.get(PLAYER_SELECT_SCENE_PATH)));
-            imgPointer = new Image(Files.newInputStream(
-                    Paths.get(POINTER_PATH)));            
+            imgBackground = new Image(Files.newInputStream(Paths.get(PLAYER_SELECT_SCENE_PATH)));
+            imgPointer = new Image(Files.newInputStream(Paths.get(POINTER_PATH)));            
         } catch (Exception e) {
             return;
         }                
@@ -51,19 +48,16 @@ public class PlayerSelectScene extends GauntletScene
         
         new AnimationTimer()
         {
-            @Override
             public void handle(long currentNanoTime)
             {
                 if(activeKeys.contains(KeyCode.SPACE))
                 {
                     this.stop();
                     Gauntlet.setScene(Gauntlet.GAME_SCENE);
-                } else if (releasedKeys.contains(KeyCode.UP) &&
-                        chosenPlayer > 0) {
+                } else if (releasedKeys.contains(KeyCode.UP) && chosenPlayer > 0) {
                     chosenPlayer--;
                     chosenPlayerY -= POINTER_Y_INCREMENT;
-                } else if (releasedKeys.contains(KeyCode.DOWN) &&
-                        chosenPlayer < 3) {
+                } else if (releasedKeys.contains(KeyCode.DOWN) && chosenPlayer < 3) {
                     chosenPlayer++;
                     chosenPlayerY += POINTER_Y_INCREMENT;
                 }
