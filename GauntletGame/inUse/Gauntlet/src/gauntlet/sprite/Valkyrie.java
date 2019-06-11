@@ -1,9 +1,5 @@
 package gauntlet.sprite;
 
-/**
- *
- * @author Adrián Navarro Gabino
- */
 public class Valkyrie extends MainCharacter
 { 
     public Valkyrie()
@@ -38,8 +34,13 @@ public class Valkyrie extends MainCharacter
     }
 
     @Override
-    public void addWeapon() {
-        Sword newSword = new Sword();
-        super.addWeapon(newSword);
-    }
+    public void addWeapon()
+    {
+        Runnable r = () -> {
+            Sword newSword = new Sword();
+            super.addWeapon(newSword);
+        };
+        Thread t = new Thread(r);
+        t.start();
+    }    
 }

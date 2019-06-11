@@ -1,9 +1,5 @@
 package gauntlet.sprite;
 
-/**
- *
- * @author Adrián Navarro Gabino
- */
 public class Sword extends Weapon
 {
     public Sword()

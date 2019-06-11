@@ -1,9 +1,5 @@
 package gauntlet.sprite;
 
-/**
- *
- * @author Adrián Navarro Gabino
- */
 public class MovableSprite extends Sprite
 {
     public static final int TOTAL_MOVEMENTS = 8;

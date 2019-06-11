@@ -1,9 +1,5 @@
 package gauntlet.sprite;
 
-/**
- *
- * @author Adrián Navarro Gabino
- */
 public class Warrior extends MainCharacter
 {
     public Warrior()
@@ -36,10 +32,15 @@ public class Warrior extends MainCharacter
         
         updateSpriteCoordinates();
     }
-
+    
     @Override
-    public void addWeapon() {
-        Axe newAxe = new Axe();
-        super.addWeapon(newAxe);
+    public void addWeapon()
+    {
+        Runnable r = () -> {
+            Axe newAxe = new Axe();
+            super.addWeapon(newAxe);        
+        };
+        Thread t = new Thread(r);
+        t.start();
     }
 }

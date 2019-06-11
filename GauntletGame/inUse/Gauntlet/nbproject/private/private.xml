@@ -3,33 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/scene/GameScene.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/scene/GameOverScene.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/StaticSprite.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Wall.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Magic.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Sorcerer.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Sword.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Axe.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Valkyrie.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Enemy.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/scene/GauntletScene.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Ghost.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/ExitPoint.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Weapon.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Enemy2.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/MainCharacter.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/MovableSprite.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Potion.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/scene/PlayerSelectScene.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Treasure.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Sprite.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Arrow.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Dwarf.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Warrior.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/scene/WelcomeScene.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Meat.java</file>
-            <file>file:/C:/Users/adnag/Desktop/18-19/Entornos%20de%20desarrollo%2018-19/Annex%20II%20-%20Introduction%20to%20game%20programming/Gauntlet/src/gauntlet/sprite/Food.java</file>
+            <file>file:/C:/Users/Adrián%20Navarro/Desktop/Gauntlet/src/gauntlet/sprite/MainCharacter.java</file>
+            <file>file:/C:/Users/Adrián%20Navarro/Desktop/Gauntlet/src/gauntlet/scene/GameScene.java</file>
         </group>
     </open-files>
 </project-private>

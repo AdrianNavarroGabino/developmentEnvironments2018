@@ -1,9 +1,5 @@
 package gauntlet.sprite;
 
-/**
- *
- * @author Adrián Navarro Gabino
- */
 public class Dwarf extends MainCharacter
 {
     public Dwarf()
@@ -36,10 +32,15 @@ public class Dwarf extends MainCharacter
         
         updateSpriteCoordinates();
     }
-
+    
     @Override
-    public void addWeapon() {
-        Arrow newArrow = new Arrow();
-        super.addWeapon(newArrow);
-    }
+    public void addWeapon()
+    {
+        Runnable r = () -> {
+            Arrow newArrow = new Arrow();
+            super.addWeapon(newArrow);
+        };
+        Thread t = new Thread(r);
+        t.start();        
+    }    
 }

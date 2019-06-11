@@ -3,13 +3,9 @@ package gauntlet.sprite;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Adrián Navarro Gabino
- */
 public abstract class MainCharacter extends MovableSprite
 {
-    public static final byte STEP_LENGTH = 1;
+    public static final byte STEP_LENGTH = 2;
     
     protected int energy, points;
     protected List<Weapon> weapons;
@@ -19,32 +15,14 @@ public abstract class MainCharacter extends MovableSprite
         points = 0;
         weapons = new ArrayList<>();
     }
-    
-    public void setEnergy(int energy)
-    {
-        this.energy += energy;
-    }
-    
-    public int getEnergy()
-    {
-        return energy;
-    }
 
-    public void setPoints(int points) {
-        this.points += points;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-    
     public List<Weapon> getWeapons()
     {
         return weapons;
     }
     
     public abstract void addWeapon();
-    
+
     public void addWeapon(Weapon w)
     {
         w.x = this.x;
@@ -53,11 +31,11 @@ public abstract class MainCharacter extends MovableSprite
         w.updateSpriteCoordinates();
         weapons.add(w);
     }
-    
+
     public void removeWeapon(int index)
     {
         weapons.remove(index);
-    }
+    }    
     
     public void moveWeapons()
     {
@@ -95,5 +73,26 @@ public abstract class MainCharacter extends MovableSprite
                     break;
             }
         }
+    }    
+    
+    public void setEnergy(int energy)
+    {
+        this.energy += energy;
     }
+    
+    public int getEnergy()
+    {
+        return energy;
+    }
+    
+    public void setPoints(int points)
+    {
+        this.points += points;
+    }
+    
+    public int getPoints()
+    {
+        return points;
+    }
+    
 }

@@ -1,27 +1,10 @@
 package gauntlet.scene;
 
 import gauntlet.Gauntlet;
-import gauntlet.sprite.Dwarf;
-import gauntlet.sprite.Enemy;
-import gauntlet.sprite.Enemy2;
-import gauntlet.sprite.ExitPoint;
-import gauntlet.sprite.Food;
-import gauntlet.sprite.Ghost;
-import gauntlet.sprite.MainCharacter;
-import gauntlet.sprite.Meat;
-import gauntlet.sprite.MovableSprite;
-import gauntlet.sprite.Potion;
-import gauntlet.sprite.Sorcerer;
-import gauntlet.sprite.Sprite;
-import gauntlet.sprite.Treasure;
-import gauntlet.sprite.Valkyrie;
-import gauntlet.sprite.Wall;
-import gauntlet.sprite.Warrior;
-import gauntlet.sprite.Weapon;
+import gauntlet.level.Level;
+import gauntlet.sprite.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.Media;
@@ -35,12 +18,10 @@ import javafx.scene.text.FontWeight;
  * @author Adrián Navarro Gabino
  */
 public class GameScene extends GauntletScene
-{   
-    
+{
     public static final int BOTTOM_LIMIT = 500;
     private static final long ENERGY_UPDATE = 1000000000;
     private static final int ENERGY_DECREASE = 10;
-    public static final byte POINTS_INCREASED = 100;
     
     public static String[] GAME_SONGS = { 
         "sound/themeA.mp3",
@@ -49,224 +30,101 @@ public class GameScene extends GauntletScene
     };
     
     private MainCharacter character;
-    private Wall wall;
-    private List<Enemy> enemies;
-    private List<Food> food;
-    private List<Treasure> treasure;
+    private Level level;
     private Font gameFont;
     private Random random;
-    private ExitPoint exitPoint;
+    private String levelFile;
     
-    private int oldX, oldY, oldXEnemy, oldYEnemy;
+    private int oldX, oldY, oldXMap, oldYMap;    
     private long currentTime = 0;
         
-    public GameScene()
+    public GameScene(String levelFile)
     {        
         super();        
         random = new Random();
         gameFont = Font.font("Courier New", FontWeight.BOLD, 24);
         gc.setFont(gameFont);
-        wall = new Wall(500,200);
-        enemies = new ArrayList<>();
-        Enemy enemy = new Ghost();
-        enemy.moveTo(700, 200);
-        Enemy enemy2 = new Ghost();
-        enemy2.moveTo(600, 450);
-        Enemy enemy3 = new Enemy2();
-        enemy3.moveTo(800, 300);
-        enemies.add(enemy);
-        enemies.add(enemy2);
-        enemies.add(enemy3);
-        food = new ArrayList<>();
-        food.add(new Potion(100, 300));
-        food.add(new Meat(50, 50));
-        exitPoint = new ExitPoint(400, 350);
-        treasure = new ArrayList<>();
-        treasure.add(new Treasure(500, 400));
-        
+        this.levelFile = levelFile;
     }
-
+    
     @Override
     public void draw() 
-    {
+    {        
         activeKeys.clear();
         sound = new Media(new File(GAME_SONGS[random.nextInt(GAME_SONGS.length)]).toURI().toString());
         mediaPlayer = new MediaPlayer(sound);        
         mediaPlayer.play();
-
-        switch (PlayerSelectScene.chosenPlayer)
-        {
-            case 0:
-                character = new Warrior();
-                break;
-            case 1:
-                character = new Valkyrie();
-                break;
-            case 2:
-                character = new Sorcerer();
-                break;
-            case 3:
-                character = new Dwarf();
-                break;
-        }
-        character.moveTo(100, 200);
+        
+        choosePlayer();
+        level = new Level();
+        level.load(Level.LEVELS_FOLDER + levelFile, character);
+        List<Food> food = level.getFood();
+        List<Treasure> treasures = level.getTreasures();
+        List<Enemy> enemies = level.getEnemies();
+        List<Wall> walls = level.getWalls();
+        ExitPoint exit = level.getExit();
+        level.setXMap(character.getX() - 150);
+        level.setYMap(character.getY() - 150);
                 
         new AnimationTimer()
         {
             public void handle(long currentNanoTime)
-            {
-                if (currentTime == 0)
-                {
-                    currentTime = currentNanoTime;
-                }
-                if (currentNanoTime - currentTime > ENERGY_UPDATE)
-                {
-                    currentTime = currentNanoTime;
-                    updateEnergy();
-                }
-
-                // Black background
+            {                
+                updateTime(currentNanoTime);
+                
+                detectKeys(this);
+                
+                // Move elements player and weapons
+                
+                moveCharacter();
+                character.moveWeapons();
+                moveEnemies(enemies, walls);                
+                
+                // Check collisions
+                collisionCharacterWalls(character, walls);
+                collisionCharacterFood(character, food);
+                collisionCharacterTreasures(character, treasures);
+                collisionWeaponsWalls(character.getWeapons(), walls);
+                collisionWeaponsEnemies(character.getWeapons(), enemies);                
+                
+                // Clear screen
+                
                 gc.setFill(Color.BLACK);
                 gc.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
                 
-                // Bottom texts and line
+                // Draw everything       
                 
-                gc.setStroke(Color.YELLOW);
-                gc.strokeLine(0, BOTTOM_LIMIT, GAME_WIDTH, BOTTOM_LIMIT);
-                gc.setFill(Color.RED);
-                gc.fillText("ENERGY:", 5, BOTTOM_LIMIT + 50);
-                gc.setFill(Color.GREEN);
-                gc.fillText("POINTS:", GAME_WIDTH - 200, BOTTOM_LIMIT + 50);
+                character.draw(gc, level.getXMap(), level.getYMap());
                 
-                
-                if(activeKeys.contains(KeyCode.ESCAPE)||
-                    character.getEnergy() <= 0 ||
-                    character.collidesWith(exitPoint))
-                {
-                    this.stop();
-                    mediaPlayer.stop();
-                    Gauntlet.setScene(Gauntlet.GAME_OVER_SCENE);
-                }
-                if (releasedKeys.contains(KeyCode.SPACE))
-                {
-                    releasedKeys.remove(KeyCode.SPACE);
-                    character.addWeapon();
-                }
-                
-                oldX = character.getX();
-                oldY = character.getY();
-                moveCharacter();
-                character.moveWeapons();
-                List<Weapon> weapons = character.getWeapons();
-                int i = 0;
-                while (i < weapons.size())
-                {
-                    if (weapons.get(i).collidesWith(wall) ||
-                        weapons.get(i).isOutOfBounds())
-                    {
-                        character.removeWeapon(i);
-                    }
-                    else
-                    {
-                        i++;
-                    }
-                }
-                if(character.collidesWith(wall))
-                {
-                    character.moveTo(oldX, oldY);
-                }
-                
-                i = 0;
-                while (i < food.size())
-                {
-                    if (character.collidesWith(food.get(i)))
-                    {
-                        character.setEnergy(food.get(i).getEnergy());
-                        
-                        food.remove(i);
-                    }
-                    else
-                    {
-                        i++;
-                    }
-                }
-                
-                i = 0;
-                while (i < treasure.size())
-                {
-                    if (character.collidesWith(treasure.get(i)))
-                    {
-                        character.setPoints(POINTS_INCREASED);
-                        treasure.remove(i);
-                    }
-                    else
-                    {
-                        i++;
-                    }
-                }
+                for (Enemy enemy: enemies)
+                    enemy.draw(gc, level.getXMap(), level.getYMap());
 
-                character.draw(gc);
-                for (Enemy enemy: enemies)
-                {
-                    oldXEnemy = enemy.getX();
-                    oldYEnemy = enemy.getY();
-                    enemy.move(character);
-                    
-                    if (enemy.collidesWith(wall))
-                    {
-                        enemy.moveTo(oldXEnemy, oldYEnemy);
-                    }
-                    if (enemy.collidesWith(character))
-                    {
-                        enemy.moveTo(oldXEnemy, oldYEnemy);
-                        character.moveTo(oldX, oldY);
-                    }
-                }
-                
-                for(int e = 0; e < enemies.size(); e++)
-                {
-                    for(int w = 0; w < weapons.size(); w++)
-                    {
-                        if(enemies.get(e).collidesWith(weapons.get(w)))
-                        {
-                            character.setPoints(POINTS_INCREASED);
-                            enemies.remove(e);
-                            weapons.remove(w);
-                        }
-                    }
-                }
-                
-                character.draw(gc);
-                for (Enemy enemy: enemies)
-                {
-                    enemy.draw(gc);
-                }
-                
-                for(Weapon w: character.getWeapons())
-                {
-                    w.draw(gc);
-                }
-                
+                for (Weapon w: character.getWeapons())
+                    w.draw(gc, level.getXMap(), level.getYMap());
+
                 for (Food f: food)
-                {
-                    f.draw(gc);
-                }
+                    f.draw(gc, level.getXMap(), level.getYMap());
+
+                for (Treasure t: treasures)
+                    t.draw(gc, level.getXMap(), level.getYMap());
+
+                for (Wall w: walls)
+                    w.draw(gc, level.getXMap(), level.getYMap());
+
+                level.getExit().draw(gc, level.getXMap(), level.getYMap());
                 
-                for (Treasure t: treasure)
-                {
-                    t.draw(gc);
-                }
-                
-                wall.draw(gc);
-                exitPoint.draw(gc);
-                drawEnergy();
-                drawPoints();
+                drawHUD();
             }
         }.start();        
     }  
     
     private void moveCharacter()
     {
+        oldX = character.getX();
+        oldY = character.getY();
+        oldXMap = level.getXMap();
+        oldYMap = level.getYMap();
+        
         boolean left = activeKeys.contains(KeyCode.LEFT);
         boolean right = activeKeys.contains(KeyCode.RIGHT);
         boolean up = activeKeys.contains(KeyCode.UP);
@@ -276,21 +134,29 @@ public class GameScene extends GauntletScene
         {
             character.moveTo(character.getX(), 
                              character.getY() - MainCharacter.STEP_LENGTH);
+            if(level.getYMap() > 0)
+                level.setYMap(level.getYMap() - MainCharacter.STEP_LENGTH);
         }
-        if (down && character.getY() < BOTTOM_LIMIT - Sprite.SPRITE_HEIGHT)
+        if (down && character.getY() < level.getHeight() - Sprite.SPRITE_HEIGHT)
         {
             character.moveTo(character.getX(), 
                              character.getY() + MainCharacter.STEP_LENGTH);
+            if (level.getYMap() < level.getHeight() - BOTTOM_LIMIT)
+                level.setYMap(level.getYMap() + MainCharacter.STEP_LENGTH);
         }
         if (left && character.getX() > 0)
         {
             character.moveTo(character.getX() - MainCharacter.STEP_LENGTH, 
                              character.getY());
+            if (level.getXMap() > 0)
+                level.setXMap(level.getXMap() - MainCharacter.STEP_LENGTH);
         }
-        if (right && character.getX() < GAME_WIDTH - Sprite.SPRITE_WIDTH)
+        if (right && character.getX() < level.getWidth() - Sprite.SPRITE_WIDTH)
         {
             character.moveTo(character.getX() + MainCharacter.STEP_LENGTH, 
                              character.getY());
+            if (level.getXMap() < level.getWidth() - GauntletScene.GAME_WIDTH)
+                level.setXMap(level.getXMap() + MainCharacter.STEP_LENGTH);
         }        
         
         if (left)
@@ -312,12 +178,25 @@ public class GameScene extends GauntletScene
         gc.setFill(Color.RED);
         gc.fillText("ENERGY: " + character.getEnergy(), 5, BOTTOM_LIMIT + 50);
     }
-    
+
     private void drawPoints()
     {
         gc.setFill(Color.GREEN);
-        gc.fillText("POINTS: " + character.getPoints(), GAME_WIDTH - 200,
-                BOTTOM_LIMIT + 50);
+        gc.fillText("POINTS: " + character.getPoints(), GauntletScene.GAME_WIDTH - 200, BOTTOM_LIMIT + 50);
+    }
+    
+    private void drawHUD()
+    {
+        // Black background
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, BOTTOM_LIMIT, GAME_WIDTH, GAME_HEIGHT - BOTTOM_LIMIT);
+
+        // Bottom texts and line
+
+        gc.setStroke(Color.YELLOW);
+        gc.strokeLine(0, BOTTOM_LIMIT, GauntletScene.GAME_WIDTH, BOTTOM_LIMIT);
+        drawPoints();
+        drawEnergy();        
     }
     
     private void updateEnergy()
@@ -325,4 +204,199 @@ public class GameScene extends GauntletScene
         int totalDecrease = ENERGY_DECREASE;
         character.setEnergy(-totalDecrease);
     }
+    
+    private void updateTime(long currentNanoTime)
+    {
+        if (currentTime == 0)
+        {
+            currentTime = currentNanoTime;
+        }
+        if (currentNanoTime - currentTime > ENERGY_UPDATE)
+        {
+            currentTime = currentNanoTime;
+            updateEnergy();
+        }        
+    }
+    
+    private void choosePlayer()
+    {   
+        character = new Warrior();
+        
+        switch (PlayerSelectScene.chosenPlayer)
+        {
+            case 1:
+                character = new Valkyrie();
+                break;
+            case 2:
+                character = new Sorcerer();
+                break;
+            case 3:
+                character = new Dwarf();
+                break;
+        }
+    }
+    
+    private void detectKeys(AnimationTimer timer)
+    {
+        if(activeKeys.contains(KeyCode.ESCAPE) || 
+           character.getEnergy() <= 0 ||
+           (character.collidesWith(level.getExit()) && levelFile.equals("level3.txt")))
+        {
+            timer.stop();
+            mediaPlayer.stop();
+            Gauntlet.setScene(Gauntlet.GAME_OVER_SCENE);
+        }
+        if(character.collidesWith(level.getExit()) && levelFile.equals("level1.txt"))
+        {
+            timer.stop();
+            mediaPlayer.stop();
+            Gauntlet.setScene(Gauntlet.GAME_SCENE_2);
+        }
+        if(character.collidesWith(level.getExit()) && levelFile.equals("level2.txt"))
+        {
+            timer.stop();
+            mediaPlayer.stop();
+            Gauntlet.setScene(Gauntlet.GAME_SCENE_3);
+        }
+        if (releasedKeys.contains(KeyCode.SPACE))
+        {
+            releasedKeys.remove(KeyCode.SPACE);
+            character.addWeapon();
+        }        
+    }
+    
+    private void collisionCharacterWalls(MainCharacter character, List<Wall> walls)
+    {
+        for(Wall wall: walls)
+        {
+            if (character.collidesWith(wall))
+            {
+                character.moveTo(oldX, oldY);
+                level.setXMap(oldXMap);
+                level.setYMap(oldYMap);
+            }        
+        }
+    }
+    
+    private void collisionCharacterFood(MainCharacter character, List<Food> food)
+    {
+        int i = 0;
+        while (i < food.size())
+        {
+            if (character.collidesWith(food.get(i)))
+            {
+                character.setEnergy(food.get(i).getEnergy());
+                food.remove(i);
+            }
+            else
+            {
+                i++;
+            }
+        }
+    }
+    
+    private void collisionCharacterTreasures(MainCharacter character, List<Treasure> treasures)
+    {
+        int i = 0;
+        while (i < treasures.size())
+        {
+            if (character.collidesWith(treasures.get(i)))
+            {
+                character.setPoints(Treasure.SCORE);
+                drawPoints();
+                treasures.remove(i);
+            }
+            else
+            {
+                i++;
+            }
+        }        
+    }
+    
+    private void collisionWeaponsWalls(List<Weapon> weapons, List<Wall> walls)
+    {
+        int i = 0;
+        int j;
+        boolean collided;
+        while (i < weapons.size())
+        {
+            j = 0;
+            collided = false;
+            while (j < walls.size() && ! collided)
+            {
+                if (weapons.get(i).collidesWith(walls.get(j)) ||
+                    weapons.get(i).isOutOfBounds(level.getWidth(),
+                                                level.getHeight()))
+                {
+                    character.removeWeapon(i);
+                    collided = true;
+                }
+                else
+                {
+                    j++;
+                }
+            }
+            
+            if (!collided)
+            {
+                i++;
+            }
+        }        
+    }
+    
+    private void collisionWeaponsEnemies(List<Weapon> weapons, List<Enemy> enemies)
+    {
+        int i = 0;
+        int j = 0;
+        while (i < weapons.size())
+        {
+            boolean enemyCollided = false;
+            while (j < enemies.size() && !enemyCollided)
+            {
+                if (weapons.get(i).collidesWith(enemies.get(j)))
+                {
+                    character.removeWeapon(i);
+                    enemies.remove(j);
+                    character.setPoints(Enemy.SCORE) ;
+                    enemyCollided = true;
+                }
+                else
+                {
+                    j++;
+                }
+            }
+
+            if (!enemyCollided)
+                i++;
+        }                        
+    }
+    
+    private void moveEnemies(List<Enemy> enemies, List<Wall> walls)
+    {
+        int oldXEnemy, oldYEnemy;
+        for (Enemy enemy: enemies)
+        {
+            oldXEnemy = enemy.getX();
+            oldYEnemy = enemy.getY();
+            enemy.move(character);
+
+            for (Wall wall: walls)
+            {
+                if (enemy.collidesWith(wall))
+                {
+                    enemy.moveTo(oldXEnemy, oldYEnemy);
+                }
+            }    
+                
+            if (enemy.collidesWith(character))
+            {
+                enemy.moveTo(oldXEnemy, oldYEnemy);
+                character.moveTo(oldX, oldY);
+                level.setXMap(oldXMap);
+                level.setYMap(oldYMap);
+            }
+        }
+        
+    }
 }
+

@@ -1,9 +1,5 @@
 package gauntlet.sprite;
 
-/**
- *
- * @author Adrián Navarro Gabino
- */
 public class Meat extends Food
 {
     static final int MEAT_ENERGY = 200;

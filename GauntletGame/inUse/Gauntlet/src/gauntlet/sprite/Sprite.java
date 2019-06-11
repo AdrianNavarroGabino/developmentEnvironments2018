@@ -6,10 +6,6 @@ import java.nio.file.Paths;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-/**
- *
- * @author Adrián Navarro Gabino
- */
 public class Sprite 
 {
     public static final int SPRITE_WIDTH = 46;
@@ -48,17 +44,16 @@ public class Sprite
         return y;
     }
 
-    public void draw(GraphicsContext gc)
+    public void draw(GraphicsContext gc, int xMap, int yMap)
     {
         gc.drawImage(spriteSheet, spriteX, spriteY, SPRITE_WIDTH, SPRITE_HEIGHT, 
-                     x, y, SPRITE_WIDTH, SPRITE_HEIGHT);
+                     x - xMap, y - yMap, SPRITE_WIDTH, SPRITE_HEIGHT);
     }
     
     public boolean collidesWith(Sprite sp)
     {
-        return (x + Sprite.SPRITE_WIDTH > sp.x &&
-                x < sp.x + Sprite.SPRITE_WIDTH &&
-                y + Sprite.SPRITE_HEIGHT > sp.y &&
-                y < sp.y + Sprite.SPRITE_HEIGHT);
+        return (x + Sprite.SPRITE_WIDTH > sp.x && x < sp.x + Sprite.SPRITE_WIDTH && 
+                y + Sprite.SPRITE_HEIGHT > sp.y && y < sp.y + Sprite.SPRITE_HEIGHT);
     }
+    
 }

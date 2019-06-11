@@ -1,18 +1,15 @@
 package gauntlet.sprite;
 
-/**
- *
- * @author Adrián Navarro Gabino
- */
 public class Enemy extends MovableSprite
-{
+{    
     public static final byte STEP_LENGTH = 1;
-    
+    public static final int SCORE = 50;
+
     public void move(MainCharacter character)
     {
         int xDiff = character.getX() - this.getX();
         int yDiff = character.getY() - this.getY();
-        
+
         if (xDiff < 0 && yDiff < 0)
         {
             this.currentDirection = MovableSprite.LEFT_UP;
@@ -57,7 +54,7 @@ public class Enemy extends MovableSprite
             this.currentDirection = MovableSprite.DOWN;
             this.y += STEP_LENGTH;
         }
-        
+
         this.animate(this.currentDirection);
-    }
+    }    
 }

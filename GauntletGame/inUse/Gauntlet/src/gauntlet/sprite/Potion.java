@@ -1,9 +1,5 @@
 package gauntlet.sprite;
 
-/**
- *
- * @author Adrián Navarro Gabino
- */
 public class Potion extends Food
 {
     static final int POTION_ENERGY = 100;
@@ -15,5 +11,5 @@ public class Potion extends Food
         this.y = y;
         this.spriteX = 1360;
         this.spriteY = 340;
-    }
+    }    
 }

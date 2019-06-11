@@ -1,9 +1,5 @@
 package gauntlet.sprite;
 
-/**
- *
- * @author Adrián Navarro Gabino
- */
 public class Sorcerer extends MainCharacter
 {
     public Sorcerer()
@@ -36,10 +32,15 @@ public class Sorcerer extends MainCharacter
         
         updateSpriteCoordinates();
     }
-
+    
     @Override
-    public void addWeapon() {
-        Magic newMagic = new Magic();
-        super.addWeapon(newMagic);
-    }
+    public void addWeapon()
+    {
+        Runnable r = () -> {
+            Magic newMagic = new Magic();
+            super.addWeapon(newMagic);
+        };
+        Thread t = new Thread(r);
+        t.start();
+    }    
 }

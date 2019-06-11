@@ -53,7 +53,7 @@ public class PlayerSelectScene extends GauntletScene
                 if(activeKeys.contains(KeyCode.SPACE))
                 {
                     this.stop();
-                    Gauntlet.setScene(Gauntlet.GAME_SCENE);
+                    Gauntlet.setScene(Gauntlet.GAME_SCENE_1);
                 } else if (releasedKeys.contains(KeyCode.UP) && chosenPlayer > 0) {
                     chosenPlayer--;
                     chosenPlayerY -= POINTER_Y_INCREMENT;
