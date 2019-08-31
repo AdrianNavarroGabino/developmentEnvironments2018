@@ -1,0 +1,8 @@
+Hotel;Melia;120;4;YES
+RuralHouse;La Casona;80;20;10
+RuralHouse;La Alpaca;60;6;4
+Hotel;Gran Sol;90;4;NO
+Hotel;Castilla;80;3;YES
+RuralHouse;Casa Julio;50;8;5
+Hotel;Bali;140;5;YES
+Hotel;Costa Narejos;50;4;YES
